@@ -2,6 +2,12 @@
 import express from 'express';
 import productRouter from './routes/product.router.js';
 
+import { config } from "dotenv";
+
+// פונקציה שמביאה מידע מהקובץ הסודי
+// .env
+config();
+
 const app = express();
 
 // מיד אחרי יצירת השרת
@@ -21,7 +27,8 @@ app.get('/', (req, res) => {
 // ומחפש את המשך הכתובת
 app.use('/products', productRouter);
 
-const port = 3000;
+// ?? ערך דיפולטיבי
+const port = process.env.PORT ?? 3000;
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 });
