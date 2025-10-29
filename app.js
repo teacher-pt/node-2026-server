@@ -1,11 +1,13 @@
 // const express = require('express');
 import express from 'express';
+import productRouter from './routes/product.router.js';
 
 const app = express();
 
 // מיד אחרי יצירת השרת
 // בשביל להוסיף יכולת של קבלת באדי
 // body - POST/PUT/PATCH
+// app.use - הוספת הגדרות על כל מי שמתחיל בכתובת מסוימת
 app.use(express.json()); // JSON כדי לקבל אוביקט
 app.use(express.urlencoded({ extended: true })); // כדי לקבל קבצים
 
@@ -13,32 +15,11 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.get('/products', (req, res) => {
-    console.log(req.query); // פרמטר שלא חובה עם ?
-    
-    res.send('Hello Products! sort by ' + req.query.sort);
-});
-
-app.post('/products', (req, res) => {
-    console.log(req.body);
-    
-    res.send('product added!');
-});
-
-app.put('/products/:id', (req, res) => {
-    console.log(req.body);
-    console.log(req.params);
-    // const id = req.params.id;
-    const { id } = req.params;
-
-    res.send(`product ${id} updated!`);
-});
-
-app.delete('/products/:id', (req, res) => {
-    const { id } = req.params;
-
-    res.send(`product ${id} deleted!`);
-});
+// כשהכתובת
+// http://localhost:3000/products- מתחילה ב
+// productRouter מיד הולך ל
+// ומחפש את המשך הכתובת
+app.use('/products', productRouter);
 
 const port = 3000;
 app.listen(port, () => {
