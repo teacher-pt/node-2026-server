@@ -3,11 +3,13 @@ import express from 'express';
 import productRouter from './routes/product.router.js';
 
 import { config } from "dotenv";
+import { printHello } from './middlewares/simple.middleware.js';
 
 // פונקציה שמביאה מידע מהקובץ הסודי
 // .env
 config();
 
+// יצירת שרת
 const app = express();
 
 // מיד אחרי יצירת השרת
@@ -16,6 +18,8 @@ const app = express();
 // app.use - הוספת הגדרות על כל מי שמתחיל בכתובת מסוימת
 app.use(express.json()); // JSON כדי לקבל אוביקט
 app.use(express.urlencoded({ extended: true })); // כדי לקבל קבצים
+
+app.use(printHello);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
