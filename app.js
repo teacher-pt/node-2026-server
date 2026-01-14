@@ -19,6 +19,10 @@ const app = express();
 app.use(express.json()); // JSON כדי לקבל אוביקט
 app.use(express.urlencoded({ extended: true })); // כדי לקבל קבצים
 
+// static - הופך תיקיה עם קבצים לתיקיה ציבורית שיוכלו לגשת אליה דרך השרת
+app.use('/images', express.static('public'));
+app.use(express.static('client'));
+
 app.use(printHello);
 
 app.get('/', (req, res) => {
