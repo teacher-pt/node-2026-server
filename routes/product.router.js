@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { addProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../controllers/product.controller.js";
+import { printHello } from '../middlewares/simple.middleware.js';
+
 
 // יצירת נתב עבור כל הניתובים שקשורים למוצרים
 const router = Router();
 
 // GET - החזרת כל המוצרים
-router.get('/', getAllProducts);
+router.get('/', printHello, getAllProducts);
 
 router.get('/:id', getProductById);
 

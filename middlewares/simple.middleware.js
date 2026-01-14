@@ -17,3 +17,8 @@ export const printHello = (req111, res11, next1111) => {
     req111.xxx = 123;
     next1111();
 };
+
+// מידלוואר שחוסם גישה לאתר משעה 4 עד 5 בצהרים
+const blockHours45 = (req, res, next) => {
+
+};
