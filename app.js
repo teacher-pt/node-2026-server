@@ -1,9 +1,14 @@
 // const express = require('express');
 import express from 'express';
+import { config } from "dotenv";
+import morgan from 'morgan';
+import cors from 'cors';
+
 import productRouter from './routes/product.router.js';
 
-import { config } from "dotenv";
 import { printHello } from './middlewares/simple.middleware.js';
+import { errorHandler, urlNotFound } from './middlewares/errors.middleware.js';
+import { blockHours } from './middlewares/blockServer.middleware.js';
 
 // פונקציה שמביאה מידע מהקובץ הסודי
 // .env
@@ -11,6 +16,18 @@ config();
 
 // יצירת שרת
 const app = express();
+
+app.use(blockHours);
+
+// CORS - cross orign resource sharing
+// שיתוף מידע בין אתרים שונים
+//app.use(cors()); // גישה מכל קליינט
+app.use(cors({ origin: 'http://127.0.0.1:5500' })); // גישה מקליינט מסויים
+
+app.use(printHello);
+
+// הדפסה לקונסול - לוגר
+app.use(morgan('dev'));
 
 // מיד אחרי יצירת השרת
 // בשביל להוסיף יכולת של קבלת באדי
@@ -23,8 +40,6 @@ app.use(express.urlencoded({ extended: true })); // כדי לקבל קבצים
 app.use('/images', express.static('public'));
 app.use(express.static('client'));
 
-app.use(printHello);
-
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
@@ -34,6 +49,11 @@ app.get('/', (req, res) => {
 // productRouter מיד הולך ל
 // ומחפש את המשך הכתובת
 app.use('/products', productRouter);
+
+app.use(urlNotFound);
+
+// השגיאות של כל השרת ילכו למידלוואר של השגיאות
+app.use(errorHandler);
 
 // ?? ערך דיפולטיבי
 const port = process.env.PORT ?? 3000;

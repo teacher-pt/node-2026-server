@@ -6,7 +6,7 @@ const db = [
 ];
 
 // GET - החזרת כל המוצרים
-export const getAllProducts = (req, res) => {
+export const getAllProducts = (req, res, next) => {
     console.log(req.query); // פרמטר שלא חובה עם ?
 
     // res.send('Hello Products! sort by ' + req.query.sort);
@@ -15,24 +15,27 @@ export const getAllProducts = (req, res) => {
     res.json(db);
 };
 
-export const getProductById = (req, res) => {
+export const getProductById = (req, res, next) => {
     const product = db.find(p => p.id == req.params.id);
 
     if (!product) {
-        res.status(404).json({ message: `product ${req.params.id} not found` });
+        // נקסט שמקבל אוביקט הולך תמיד למידלוואר של השגיאות
+        next({ status: 404, msg: `product ${req.params.id} not found` });
     } else {
         res.json(product);
     }
 };
 
 // POST - הוספת מוצר
-export const addProduct = (req, res) => {
+export const addProduct = (req, res, next) => {
     const { name } = req.body;
 
     if (!name || name.trim() === '') {
         // return עוצר את הפונקציה
         // ואז כל שאר הקוד יתבצע רק אם השם תקין
-        return res.status(409).json({ message: 'name must not be empty' });
+        // נקסט שמקבל אוביקט הולך תמיד למידלוואר של השגיאות
+        return next({ msg: 'name must not be empty', status: 409 })
+        //return res.status(409).json({ message: 'name must not be empty' });
     }
 
     // console.log(req.body);
@@ -47,7 +50,7 @@ export const addProduct = (req, res) => {
 };
 
 // PUT - עדכון מוצר
-export const updateProduct = (req, res) => {
+export const updateProduct = (req, res, next) => {
     const { id } = req.params; // הקוד לעדכון
 
     const product = db.find(p => p.id == id);
@@ -56,13 +59,13 @@ export const updateProduct = (req, res) => {
     res.json(product);
 };
 
-export const deleteProduct = (req, res) => {
+export const deleteProduct = (req, res, next) => {
     const { id } = req.params;
 
     const productIndex = db.findIndex(p => p.id == id);
 
     if (productIndex === -1) {
-        return res.status(404).json({ message: `product ${id} not found` });
+        return next({ msg: `product ${id} not found`, status: 404 })
     }
 
     db.splice(productIndex, 1); // מחיקת איבר אחד מאינדקס נתון
