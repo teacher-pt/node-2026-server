@@ -17,7 +17,9 @@ config();
 // יצירת שרת
 const app = express();
 
-app.use(blockHours);
+//const mdl = blockHours(14, 15);
+//app.use(mdl);
+app.use(blockHours(0, 6));
 
 // CORS - cross orign resource sharing
 // שיתוף מידע בין אתרים שונים
