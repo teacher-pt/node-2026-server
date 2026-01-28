@@ -9,17 +9,21 @@ import productRouter from './routes/product.router.js';
 import { printHello } from './middlewares/simple.middleware.js';
 import { errorHandler, urlNotFound } from './middlewares/errors.middleware.js';
 import { blockHours } from './middlewares/blockServer.middleware.js';
+import { connectDB } from './config/db.js';
 
 // פונקציה שמביאה מידע מהקובץ הסודי
 // .env
 config();
+
+// התחברות למונגו
+connectDB();
 
 // יצירת שרת
 const app = express();
 
 //const mdl = blockHours(14, 15);
 //app.use(mdl);
-app.use(blockHours(0, 6));
+//app.use(blockHours(0, 6));
 
 // CORS - cross orign resource sharing
 // שיתוף מידע בין אתרים שונים
