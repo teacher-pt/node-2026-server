@@ -7,7 +7,7 @@ const productSchema = new Schema({
     amount: Number,
     isSale: Boolean,
     productDate: Date,
-    categories: [String],
+    categories: [String], // ברירת מחדל מערך ריק
     company: {
         name: String,
         address: String

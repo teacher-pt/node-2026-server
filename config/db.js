@@ -4,7 +4,9 @@ import { connect } from "mongoose";
 
 export const connectDB = async () => {
     try {
-        const DB_URI = `mongodb://localhost:27017/storeDB`;
+        // אם הדטהבייס קיים מתחבר אליו
+        // אם לא - יוצר חדש
+        const DB_URI = process.env.MONGO_URI || `mongodb://localhost:27017/test`;
         await connect(DB_URI);
         console.log('mongo connected succesfully');
     } catch (error) {
