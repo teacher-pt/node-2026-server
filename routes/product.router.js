@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { addProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../controllers/product.controller.js";
 import { printHello } from '../middlewares/simple.middleware.js';
+import { joiValidator } from "../middlewares/validator.middleware.js";
+import { productValidation } from "../models/product.model.js";
 
 
 // יצירת נתב עבור כל הניתובים שקשורים למוצרים
@@ -12,10 +14,10 @@ router.get('/', printHello, getAllProducts);
 router.get('/:id', getProductById);
 
 // POST - הוספת מוצר
-router.post('/', addProduct);
+router.post('/', joiValidator(productValidation), addProduct);
 
 // PUT - עדכון מוצר
-router.put('/:id', updateProduct);
+router.put('/:id', joiValidator(productValidation), updateProduct);
 
 router.delete('/:id', deleteProduct);
 
