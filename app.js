@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 import productRouter from './routes/product.router.js';
+import userRouter from './routes/user.router.js';
 
 import { printHello } from './middlewares/simple.middleware.js';
 import { errorHandler, urlNotFound } from './middlewares/errors.middleware.js';
@@ -55,6 +56,7 @@ app.get('/', (req, res) => {
 // productRouter מיד הולך ל
 // ומחפש את המשך הכתובת
 app.use('/products', productRouter);
+app.use('/users', userRouter);
 
 app.use(urlNotFound);
 
