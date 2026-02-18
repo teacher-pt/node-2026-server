@@ -1,4 +1,4 @@
-import { array, bool, date, number, object, string } from "joi";
+import Joi from "joi";
 import { model, Schema } from "mongoose";
 
 // joi
@@ -10,16 +10,16 @@ import { model, Schema } from "mongoose";
 //    2.2. אם הנתונים לא תקינים, חבל על הגישה לדטהבייס שלוקחת זמן
 // 3. הספריה מכילה גם בדיקות מורכבות
 // כאן אפשר ליצור הרבה סכמות
-export const productValidation = object({
-    name: string().required().min(2),
-    price: number().positive().default(0),
-    amount: number().integer().positive(),
-    isSale: bool().default(false),
-    productDate: date(),
-    categories: array().items(string()).min(1), // מערך מחרוזות בגודל לפחות אחד
-    company: object({
-        name: string().required(),
-        address: string().optional()// לא חובה
+export const productValidation = Joi.object({
+    name: Joi.string().required().min(2),
+    price: Joi.number().positive().default(0),
+    amount: Joi.number().integer().positive(),
+    isSale: Joi.bool().default(false),
+    productDate: Joi.date(),
+    categories: Joi.array().items(Joi.string()).min(1), // מערך מחרוזות בגודל לפחות אחד
+    company: Joi.object({
+        name: Joi.string().required(),
+        address: Joi.string().optional()// לא חובה
     })
 });
 
