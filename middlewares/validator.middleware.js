@@ -7,7 +7,7 @@ export const joiValidator = (joiSchema) => {
 
         // לא תקין
         if (error) {
-            return next({ error });
+            return next({ msg: error });
         }
 
         // תקין
