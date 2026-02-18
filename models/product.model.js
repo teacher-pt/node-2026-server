@@ -38,6 +38,12 @@ const productSchema = new Schema({
     }
 });
 
+// תכונה חישובית
+// virtuals: true כדי שתוצג בלקוח חובה להוסיף
+productSchema.virtual('isInStock').get(function () {
+    return this.amount > 0;
+});
+
 // כך יצרנו אוסף/טבלה עבור מוצרים
 const Product = model('products', productSchema);
 
