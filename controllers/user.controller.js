@@ -17,6 +17,8 @@ export const login = async (req, res, next) => {
 
 export const register = async (req, res, next) => {
     try {
+        // TODO: check why `req.files` is undefined
+        console.log(req.files);
         console.log(req.files.advatar);
 
         const user = new User(req.body);

@@ -11,6 +11,7 @@ const router = Router();
 
 router.post('/login', joiValidator(userValidation.login), login);
 
-router.post('/', upload.single('advatar'), register);
+// router.post('/', joiValidator(userValidation.register), upload.single('advatar'), register);
+router.post('/', joiValidator(userValidation.register), register);
 
 export default router;
