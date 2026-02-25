@@ -5,6 +5,8 @@ import Product from "../models/product.model.js";
 // http://localhost:5000/products?name=a&sortBy=productDate&page=4&limit=3
 export const getAllProducts = async (req, res, next) => {
     try {
+        console.log(req.myUser);
+        
         // console.log(req.query); // פרמטר שלא חובה עם ?
         // בגלל שהתייחסנו לערך של משתנה בנינו את הביטוי הרגולרי בצורה דינאמית-ניו
         const list = await Product.find({ name: new RegExp(req.query.name, 'i') }) // כל המוצרים שמכילים את השם ששלחנו

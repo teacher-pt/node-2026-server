@@ -1,6 +1,22 @@
 import bcrypt from 'bcrypt';
 import Joi from "joi";
 import { model, Schema } from "mongoose";
+import jwt from 'jsonwebtoken';
+
+// ניצור פונקציה שמקבלת את הנתונים שקשורים להרשאות
+// ויוצרת מהם טוקן
+// בתוספת למחרוזת סודית שמוגדרת בפרויקט
+export const generateToken = ({ role, _id }) => {
+    const authData = { userID: _id, role };
+    const secretKey = process.env.JWT_SECRET ?? 'secretKey';
+    const token = jwt.sign(authData, secretKey,
+        {
+            // הטוקן תקף לדקה אחת בלבד
+            // expiresIn: '1m'
+            // אם לא נשים יהיה תקף תמיד
+        });
+    return token;
+};
 
 export const userValidation = {
     login: Joi.object({
@@ -30,7 +46,7 @@ const userSchema = new Schema({
     password: String,
     email: { type: String, unique: true },
     advatarUrl: String,
-    role: String
+    role: { type: String, default: 'user' }
 });
 
 // פעולה שקורית לפני שמירה של יוזר
@@ -47,7 +63,7 @@ userSchema.pre('save', async function () {
 
 // methods - מתודה על האוביקט
 // statics - פעולה סטטית בלי גישה לזיס
-userSchema.methods.checkPassword = async function(newPassword) {
+userSchema.methods.checkPassword = async function (newPassword) {
     // this - משתמש שעומדים עליו עם הסיסמא המוצפנת
     // compare - מחזיר האם הסיסמאות תואמות
     return await bcrypt.compare(newPassword, this.password);
